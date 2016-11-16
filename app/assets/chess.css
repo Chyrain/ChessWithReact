@@ -1,0 +1,48 @@
+html {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.content {
+  width: 100%;
+  height:  100%;
+}
+
+.board {
+  width: 400px;
+  height: 436px;
+  border: 1px double #d2d2da;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.chess-square {
+  width: 360px;
+  height: 360px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.pieces {
+	width: 12.5%;
+	height: 12.5%;
+  font-size: 5px; 
+}
+
+.square_mask {
+	position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.chessman {
+    height: 100%;
+    width: 100%;
+    cursor: move;
+    margin: 0 auto;
+    text-align: center;
+}
