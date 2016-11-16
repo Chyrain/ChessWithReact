@@ -1,49 +1,24 @@
 import {initialState, CHESS} from './Constants.jsx';
 import md5 from 'md5';
 
-let knightPosition = initialState.knightPosition;
-
-let boardObserver = null;
-let eatObserver = null;
+let observer = null;
 
 let board = initialState.board;
 let status = initialState.status;
 
-function emitChange(prefPos, nextPos) {
-  if (boardObserver) {
-    boardObserver(status.onBlackTurn, prefPos, nextPos);
-  }
-}
-
-function emitEat(preChessman, nextChessman) {
-  if (eatObserver) {
-    eatObserver(preChessman, nextChessman);
+function emitMove(chessman, prefPos, nextPos) {
+  if (observer) {
+    observer(chessman, prefPos, nextPos);
   }
 }
 
 export function observe(o) {
-  if (boardObserver) {
+  if (observer) {
     throw new Error('Multiple observers not implemented.');
   }
 
-  boardObserver = o;
-  // emitChange();
+  observer = o;
 }
-
-export function eatObserve(o) {
-  if (eatObserver) {
-    throw new Error('Multiple observers not implemented.');
-  }
-
-  eatObserver = o;
-}
-
-// export function randomMove(receive) {
-//   // setInterval(() => receive([
-//   //   Math.floor(Math.random() * 8),
-//   //   Math.floor(Math.random() * 8)
-//   // ]), 5);
-// }
 
 export function canDropChess(x, y, chessman) {
   var hash = md5(JSON.stringify(board));
@@ -56,23 +31,9 @@ export function canDropChess(x, y, chessman) {
 }
 
 export function moveDropChess(x, y, chessman) {
-  status.onBlackTurn = !status.onBlackTurn; // 切换走棋
-
-  let prefChessman = board[x*8+y];
-
   let [preX, preY] = chessman.position;
-  delete board[preX*8+preY];
-  chessman.position = [x, y];
-  board[x*8+y] = chessman;
 
-  v.logi('[move]:', (chessman.black ? "黑" : "白") + (CHESS[chessman.type].title), 
-    [preX, preY], " => ", [x, y]);//////
-  if (prefChessman) {
-    v.logi((chessman.black ? "黑" : "白") + (CHESS[chessman.type].title) + "吃" 
-      + (prefChessman.black ? "黑" : "白") + (CHESS[prefChessman.type].title));//////
-    emitEat(prefChessman, chessman);
-  }
-  emitChange([preX, preY], [x, y]);
+  emitMove(chessman, [preX, preY], [x, y]);
 }
 
 export function canDrag(chessman) {

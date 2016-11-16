@@ -21,15 +21,11 @@ function collect(connect, monitor) { // props
 }
 
 class Chessman extends React.Component {
-
-  componentWillReceiveProps(nextProps) {
-    // v.logd(this.props.id, 'Chessman => componentWillReceiveProps', nextProps, this.props);//////
-  }
   
   shouldComponentUpdate(nextProps, nextState) {
     let should = this.props.chessman.type !== nextProps.chessman.type || 
       this.props.chessman.black !== nextProps.chessman.black;
-    v.logi('Chessman => shouldComponentUpdate =>', should);//////
+    v.logd('Chessman => shouldComponentUpdate =>', should);//////
     return should;
   }
 
@@ -42,7 +38,7 @@ class Chessman extends React.Component {
 
   render() {
   	const { connectDragSource, isDragging } = this.props;
-    v.logi("Chessman => render");//////
+    v.logd("Chessman => render");//////
     return connectDragSource(
       <div
         title={this.props.chessman.type}
@@ -52,7 +48,6 @@ class Chessman extends React.Component {
           opacity: isDragging ? 0.3 : 1,
           fontSize: 30,
           fontWeight: 'bolder',
-          // fontFamily: icons.like.fontName
         }}
         dangerouslySetInnerHTML={{__html: CHESS[this.props.chessman.type].black.unicode}} >
       </div>

@@ -29,10 +29,6 @@ function collect(connect, monitor) {
 
 class BoardSquare extends React.Component {
 
-  componentWillReceiveProps(nextProps) {
-    v.logd(this.props.id, 'BoardSquare => componentWillReceiveProps');//////, nextProps);//////
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     let should = this.props.black !== nextProps.black || 
       this.props.x !== nextProps.x || 
@@ -44,7 +40,7 @@ class BoardSquare extends React.Component {
         this.props.chessman.black !== nextProps.chessman.black)
       ) ||
       (!this.props.chessman && nextProps.chessman) || (this.props.chessman && !nextProps.chessman);
-    v.logi(this.props.id, 'BoardSquare => shouldComponentUpdate', should);//////, this.props, nextProps);//////
+    v.logd(this.props.id, 'BoardSquare => shouldComponentUpdate', should);//////
     return should;
   }
 
@@ -69,7 +65,7 @@ class BoardSquare extends React.Component {
     const { x, y, black, chessman, connectDropTarget, isOver, canDrop } = this.props;
     const fill = black ? '#933d00' : '#e8d0aa';
     const stroke = black ? 'white' : 'black';
-    v.logi('BoardSquare => render', this.props.id);//////
+    v.logd('BoardSquare => render', this.props.id);//////
     return connectDropTarget(
       <div style={{
         backgroundColor: fill,

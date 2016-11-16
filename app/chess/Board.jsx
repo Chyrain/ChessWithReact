@@ -1,7 +1,7 @@
 import React from 'react';
 import Perf from 'react-addons-perf';
 import BoardSquare from './components/BoardSquare.jsx';
-import { observe, eatObserve } from './Game.jsx';
+import { observe } from './Game.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {initialState, CHESS} from './Constants.jsx';
@@ -12,6 +12,7 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
+
     let that = this;
     window.store = {
       getState: function() {
@@ -21,40 +22,36 @@ class Board extends React.Component {
     v.logd('Board => constructor initialState=>', this.state);//////
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   v.logd('Board => componentWillReceiveProps', nextProps);//////
-  //   this.setState({
-  //     knightPosition: nextProps.knightPosition
-  //   });
-  // }
-
   componentDidMount() {
-    v.logd('Board => componentDidMount');
-
-    // 观察者：状态改变
-    observe((onblackturn, prefPos, nextPos) => {
-      this.setState(Object.assign({}, {status:{onBlackTurn:onblackturn}}));
-      // let pref = prefPos[0]*8+prefPos[1];
-      // let next = nextPos[0]*8+nextPos[1];
-      // this.refs['square'+pref].chessman = this.state.board[pref];
-      // this.refs['square'+next].chessman = this.state.board[next];
-      // v.logw('observe =>', this.refs['square'+pref], this.refs['square'+next]);//////
-    });
-    // 观察者：状态改变
-    eatObserve((pref, next) => {
-      v.logi("吃子: " + (next.black ? "黑" : "白") + (CHESS[next.type].title) + "吃" 
-        + (pref.black ? "黑" : "白") + (CHESS[pref.type].title));//////
+    // 观察者：棋子移动
+    observe((chessman, prefPos, nextPos) => {
+      var pref = prefPos[0]*8+prefPos[1];
+      var next = nextPos[0]*8+nextPos[1];
+      var tmp = {};
+      tmp[next] = Object.assign(chessman, {position:nextPos});
+      var nextBoard = Object.assign(this.state.board, tmp);
+      delete nextBoard[pref];
+      var nextState = Object.assign(
+        this.state, 
+        { //更新棋盘
+          board: nextBoard
+        }, 
+        { //切换走棋
+          status: Object.assign(this.state.status, {onBlackTurn:!this.state.status.onBlackTurn})
+        }
+      );
+      v.logi((new Date()).getTime(), 'observe => nextState', nextState);//////
+      this.setState(nextState);
+      v.logi((new Date()).getTime(), 'observe => this.state', this.state);//////
     });
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    v.logd('Board => shouldComponentUpdate =>', this.state, nextState);//////
-    var should = md5(this.state.board) !== md5(nextState.board);
-    v.logd('Board => shouldComponentUpdate =>', should);//////
-    return true;
-  }
 
+  componentWillUpdate() {
+    this.update = (new Date()).getTime();
+    v.logi('Board => componentWillUpdate', this.update);//////
+  }
   componentDidUpdate() {
-    v.logd('Board => componentDidUpdate', (new Date()).getTime());//////
+    v.logi('Board => componentDidUpdate cost:', (new Date()).getTime() - this.update);//////
   }
 
   renderSquare(i) {
@@ -81,10 +78,10 @@ class Board extends React.Component {
     for (let i = 0; i < 64; i++) {
       squares.push(this.renderSquare(i));
     }
-    v.logw('Board => render', (new Date()).getTime(), " state =>", this.state);//////
+    v.logi('Board => render', (new Date()).getTime(), " state =>", this.state);//////
     return (
       <div className="board">
-        <div style={{paddingLeft: '10%', paddingTop: '4%',  paddingBottom: '2%'}}>{this.state.status.onBlackTurn ? '黑棋走' : '白棋走'}</div>
+        <div ref="tips" style={{paddingLeft: '20px', paddingTop: '4%',  paddingBottom: '4%'}}>{this.state.status.onBlackTurn ? '黑棋走' : '白棋走'}</div>
         <div className="chess-square" >
           {squares}
         </div>
