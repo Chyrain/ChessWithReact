@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const argv = require('yargs').argv;
 const confGenerator = require('./webpack.base.js');
 
-const config = null;
+let config = null;
 const defaultConf = {
 	outputPath: __dirname + '/public',
 	externals: { /* 以外部库引入，不打包 */

@@ -6,6 +6,7 @@ A chess web game use [react](https://facebook.github.io/react) and [react-dnd](h
 
 ## Intro
 详见: [使用React和React-Dnd编写国际象棋]()
+Demo: [https://chyrain.github.io/games/chess/](https://chyrain.github.io/games/chess/)
 
 ## License
 >   MIT License
