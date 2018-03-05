@@ -5,8 +5,10 @@ A chess web game use [react](https://facebook.github.io/react) and [react-dnd](h
 <img src="https://raw.githubusercontent.com/Chyrain/MDPictures/master/res/chess_react.gif" width = "330" alt="chess_react" align=center />
 
 ## Intro
-详见: [使用React和React-Dnd编写国际象棋]()
-Demo: [https://chyrain.github.io/games/chess/](https://chyrain.github.io/games/chess/)
+
+~~详见: [使用React和React-Dnd编写国际象棋]()~~
+
+~~Demo: [https://chyrain.github.io/games/chess/](https://chyrain.github.io/games/chess/)~~
 
 ## License
 >   MIT License
