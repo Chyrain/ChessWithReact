@@ -41,7 +41,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.3",
     "webpack-chunk-hash": "^0.2.0",
-    "webpack-dev-server": "^1.16.2",
+    "webpack-dev-server": "^3.1.11",
     "webpack-md5-hash": "^0.0.5"
   },
   "dependencies": {
